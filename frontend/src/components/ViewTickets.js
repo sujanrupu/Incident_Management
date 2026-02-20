@@ -55,7 +55,7 @@ export default function ViewTickets() {
     if (!window.confirm(`Delete ticket ${ticketKey}?`)) return;
 
     try {
-      const res = await fetch(`http://127.0.0.1:5000/delete-ticket/${ticketKey}`, {
+      const res = await fetch(`https://incident-management-a65c.onrender.com/delete-ticket/${ticketKey}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Delete failed");
@@ -75,7 +75,7 @@ export default function ViewTickets() {
 
   const handleStatusChange = async (ticketKey, newStatus) => {
     try {
-      const res = await fetch(`http://127.0.0.1:5000/update-status/${ticketKey}`, {
+      const res = await fetch(`https://incident-management-a65c.onrender.com/update-status/${ticketKey}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
@@ -291,4 +291,5 @@ export default function ViewTickets() {
     </div>
   );
 }
+
 
