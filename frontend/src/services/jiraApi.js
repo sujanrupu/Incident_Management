@@ -1,5 +1,5 @@
 export const createTicket = async (summary, description) => {
-  const response = await fetch("http://localhost:5000/create-ticket", {
+  const response = await fetch("https://incident-management-a65c.onrender.com/create-ticket", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -18,3 +18,4 @@ export const createTicket = async (summary, description) => {
 
   return data;
 };
+
