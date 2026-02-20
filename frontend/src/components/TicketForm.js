@@ -30,7 +30,7 @@ export default function TicketForm({ onTicketSubmit }) {
     setMessage("");
 
     try {
-      const response = await fetch("https://incident-management-a65c.onrender.com/create-ticket", {
+      const response = await fetch("https://incident-management-1.onrender.com/create-ticket", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -139,4 +139,5 @@ export default function TicketForm({ onTicketSubmit }) {
     </div>
   );
 }
+
 
