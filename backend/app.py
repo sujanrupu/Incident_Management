@@ -7,7 +7,7 @@ from jira_grouping_service import group_tickets
 app = Flask(__name__)
 
 # Enable CORS for all Vercel domains (allow any subdomain of vercel.app)
-CORS(app, resources={r"/*": {"origins": "https://incident-management-3uau.vercel.app", "https://incident-management-3uau.vercel.app/view-tickets"}})
+CORS(app, resources={r"/*": {"origins": "https://incident-management-3uau.vercel.app"}})
 
 # -----------------------------
 # Create a new ticket
