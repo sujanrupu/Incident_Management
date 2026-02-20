@@ -24,7 +24,7 @@ export default function ViewTickets() {
 
   const fetchTickets = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:5000/view-all-tickets");
+      const res = await fetch("https://incident-management-a65c.onrender.com/view-all-tickets");
       if (!res.ok) throw new Error("Failed to fetch tickets");
 
       const data = await res.json();
@@ -291,3 +291,4 @@ export default function ViewTickets() {
     </div>
   );
 }
+
