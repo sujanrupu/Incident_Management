@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; // Importing useNavigate for redirect
 
@@ -11,18 +11,7 @@ export default function ViewTickets() {
   const [statusMap, setStatusMap] = useState({});
   const navigate = useNavigate(); // For redirecting user to login page after logout
 
-  useEffect(() => {
-  // Check if the user is logged in
-  if (!localStorage.getItem("isAdminLoggedIn")) {
-    navigate("/"); // Redirect to login if not logged in
-  } else {
-    const cached = localStorage.getItem("ticketStatusMap");
-    if (cached) setStatusMap(JSON.parse(cached));
-    fetchTickets(); // Call fetchTickets function
-  }
-}, [navigate, fetchTickets]); 
-
-  const fetchTickets = async () => {
+  const fetchTickets = useCallback(async () => {
     try {
       const res = await fetch("https://incident-management-a65c.onrender.com/view-all-tickets");
       if (!res.ok) throw new Error("Failed to fetch tickets");
@@ -45,7 +34,18 @@ export default function ViewTickets() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusMap]); // Dependency on statusMap
+
+  useEffect(() => {
+    // Check if the user is logged in
+    if (!localStorage.getItem("isAdminLoggedIn")) {
+      navigate("/"); // Redirect to login if not logged in
+    } else {
+      const cached = localStorage.getItem("ticketStatusMap");
+      if (cached) setStatusMap(JSON.parse(cached));
+      fetchTickets(); // Call memoized fetchTickets function
+    }
+  }, [navigate, fetchTickets]); // Add fetchTickets as dependency
 
   const toggleGroup = (index) => {
     setExpandedGroup(expandedGroup === index ? null : index);
@@ -291,6 +291,3 @@ export default function ViewTickets() {
     </div>
   );
 }
-
-
-
