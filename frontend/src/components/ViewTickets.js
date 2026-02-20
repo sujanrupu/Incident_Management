@@ -12,15 +12,15 @@ export default function ViewTickets() {
   const navigate = useNavigate(); // For redirecting user to login page after logout
 
   useEffect(() => {
-    // Check if the user is logged in
-    if (!localStorage.getItem("isAdminLoggedIn")) {
-      navigate("/"); // Redirect to login if not logged in
-    } else {
-      const cached = localStorage.getItem("ticketStatusMap");
-      if (cached) setStatusMap(JSON.parse(cached));
-      fetchTickets();
-    }
-  }, [navigate]);
+  // Check if the user is logged in
+  if (!localStorage.getItem("isAdminLoggedIn")) {
+    navigate("/"); // Redirect to login if not logged in
+  } else {
+    const cached = localStorage.getItem("ticketStatusMap");
+    if (cached) setStatusMap(JSON.parse(cached));
+    fetchTickets(); // Call fetchTickets function
+  }
+}, [navigate, fetchTickets]); 
 
   const fetchTickets = async () => {
     try {
@@ -291,5 +291,6 @@ export default function ViewTickets() {
     </div>
   );
 }
+
 
 
