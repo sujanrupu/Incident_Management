@@ -13,7 +13,7 @@ export default function ViewTickets() {
 
   const fetchTickets = useCallback(async () => {
     try {
-      const res = await fetch("https://incident-management-a65c.onrender.com/view-all-tickets");
+      const res = await fetch("https://incident-management-1.onrender.com/view-all-tickets");
       if (!res.ok) throw new Error("Failed to fetch tickets");
 
       const data = await res.json();
@@ -55,7 +55,7 @@ export default function ViewTickets() {
     if (!window.confirm(`Delete ticket ${ticketKey}?`)) return;
 
     try {
-      const res = await fetch(`https://incident-management-a65c.onrender.com/delete-ticket/${ticketKey}`, {
+      const res = await fetch(`https://incident-management-1.onrender.com/delete-ticket/${ticketKey}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Delete failed");
@@ -75,7 +75,7 @@ export default function ViewTickets() {
 
   const handleStatusChange = async (ticketKey, newStatus) => {
     try {
-      const res = await fetch(`https://incident-management-a65c.onrender.com/update-status/${ticketKey}`, {
+      const res = await fetch(`https://incident-management-1.onrender.com/update-status/${ticketKey}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
@@ -291,3 +291,4 @@ export default function ViewTickets() {
     </div>
   );
 }
+
