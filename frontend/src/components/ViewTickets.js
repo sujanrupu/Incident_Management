@@ -11,30 +11,28 @@ export default function ViewTickets() {
   const [statusMap, setStatusMap] = useState({});
   const navigate = useNavigate(); // For redirecting user to login page after logout
 
-  const fetchTickets = useCallback(async () => {
-    try {
-      const res = await fetch("https://incident-management-1.onrender.com/view-all-tickets");
-      if (!res.ok) throw new Error("Failed to fetch tickets");
+const fetchTickets = useCallback(async () => {
+  try {
+    const res = await fetch("https://incident-management-1.onrender.com/view-all-tickets");
+    if (!res.ok) throw new Error("Failed to fetch tickets");
 
-      const data = await res.json();
-      setGroups(Array.isArray(data) ? data : []);
+    const data = await res.json();
+    setGroups(Array.isArray(data) ? data : []);
 
-      const backendStatuses = {};
-      data.forEach((group) => {
-        group.tickets.forEach((ticket) => {
-          if (!statusMap[ticket.key]) {
-            backendStatuses[ticket.key] = ticket.status || "Waiting for Support";
-          }
-        });
+    const backendStatuses = {};
+    data.forEach((group) => {
+      group.tickets.forEach((ticket) => {
+        backendStatuses[ticket.key] = ticket.status || "Waiting for Support";
       });
+    });
 
-      setStatusMap((prev) => ({ ...backendStatuses, ...prev }));
-    } catch (err) {
-      setError("Could not load tickets.");
-    } finally {
-      setLoading(false);
-    }
-  }, [statusMap]); // Dependency on statusMap
+    setStatusMap((prev) => ({ ...backendStatuses, ...prev }));
+  } catch (err) {
+    setError("Could not load tickets.");
+  } finally {
+    setLoading(false);
+  }
+}, []);   // ✅ EMPTY dependency array
 
   useEffect(() => {
     // Check if the user is logged in
@@ -291,4 +289,5 @@ export default function ViewTickets() {
     </div>
   );
 }
+
 
