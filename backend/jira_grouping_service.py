@@ -40,8 +40,32 @@ def fetch_all_tickets():
     auth = HTTPBasicAuth(JIRA_EMAIL, JIRA_API_TOKEN)
     headers = {"Accept": "application/json"}
 
-    response = requests.get(url, headers=headers, auth=auth)
-    data = response.json()
+    try:
+        print("Calling Jira API...")
+        
+        response = requests.get(
+            url,
+            headers=headers,
+            auth=auth,
+            timeout=10  # 🔥 prevents infinite hanging
+        )
+
+        response.raise_for_status()  # 🔥 catches 4xx/5xx errors
+
+        print("Jira API responded successfully.")
+        data = response.json()
+
+    except requests.exceptions.Timeout:
+        print("❌ Jira API request timed out.")
+        return []
+
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Jira API error: {str(e)}")
+        return []
+
+    except ValueError:
+        print("❌ Failed to parse Jira JSON response.")
+        return []
 
     tickets = []
 
@@ -53,8 +77,8 @@ def fetch_all_tickets():
                 if field.get("fieldId") == field_name:
                     val = field.get("value", "")
                     if isinstance(val, list):
-                        return " ".join(val)
-                    return val
+                        return " ".join(map(str, val))
+                    return str(val)
             return ""
 
         tickets.append({
@@ -63,7 +87,7 @@ def fetch_all_tickets():
             "description": get_field("description"),
             "reporter": get_field("reporterName") or "Unknown",
             "tags": get_field("customfield_10000").split(",") if get_field("customfield_10000") else []
-})
+        })
 
     return tickets
 
@@ -117,3 +141,4 @@ def group_tickets():
     print("Total Groups Formed:", len(formatted_groups))
 
     return formatted_groups
+
